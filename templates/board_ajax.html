@@ -9,7 +9,7 @@
 
     <title>
         {% block title %}
-        게시판 예제입니다. Ajax적용
+        Django Board
         {% endblock %}
     </title>
 
@@ -139,7 +139,9 @@
                             <td width="20%" align="center">{{ i.b_date }} </td>
                             <td width="8%" align="center">{{ i.b_count }} </td>
                             <td width="12%" align="right" style="padding:5px 0;">
+                            {% if user.username == i.b_writer or user.is_staff %}
                                 <i class="icofont-cut" onclick="deleteBoard({{ i.b_no }})" style="color:#ff6600;"></i>
+                            {% endif %}
                             </td>
                         </tr>
                     </table>

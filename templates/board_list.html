@@ -53,7 +53,9 @@
                     <td width="20%" align="center">{{ i.b_date | date:"y-m-d" }} </td>
                     <td width="8%" align="center">{{ i.b_count }} </td>
                     <td width="12%" align="right" style="padding:5px 0;">
+                        {% if user.username == i.b_writer or user.is_staff %}
                         <a href="/board_delete?b_no={{ i.b_no }}" class="btn btn-outline-success">삭제</a>
+                        {% endif %}
                     </td>
                 </tr>
             </table>
