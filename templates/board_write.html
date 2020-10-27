@@ -44,7 +44,7 @@
                         <tr style="height:45px;border-top:solid 1px #dddddd;">
                             <td width="20%" align="center">작성자</td>
                             {% if user.is_authenticated %}
-                            <td width="80%" align="left"><input type="input" placeholder={{ user.get_username }} value={{ user.get_username }} name="b_writer"></td>
+                            <td width="80%" align="left"><input type="input" value={{ user.get_username }} name="b_writer"></td>
                             {% else %}
                             <td width="80%" align="left"><input type="input" placeholder="작성자" name="b_writer"></td>
                             {% endif %}
