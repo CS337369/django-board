@@ -1,6 +1,6 @@
+from . import views
 from django.urls import path
 from django.conf.urls import include, url
-from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -17,11 +17,11 @@ urlpatterns = [
     path('board_ajax', views.board_ajax, name="board_ajax"),
     path('board_deleteajax', views.board_deleteajax, name="board_deleteajax"),
 
-    path('boardapi', views.boardapi, name="boardapi"),
-    path('boardapi_view', views.boardapi_view, name="boardapi_view"),
-    path('boardapi_edit', views.boardapi_edit, name="boardapi_edit"),
-    path('boardapi_update', views.boardapi_update, name="boardapi_update"),
-    path('boardapi_write', views.boardapi_write, name="boardapi_write"),
-    path('boardapi_insert', views.boardapi_insert, name="boardapi_insert"),
-    path('boardapi_deleteajax', views.boardapi_deleteajax, name="boardapi_deleteajax"),
+    # path('boardapi', views.boardapi, name="boardapi"),
+    # path('boardapi_view', views.boardapi_view, name="boardapi_view"),
+    # path('boardapi_edit', views.boardapi_edit, name="boardapi_edit"),
+    # path('boardapi_update', views.boardapi_update, name="boardapi_update"),
+    # path('boardapi_write', views.boardapi_write, name="boardapi_write"),
+    # path('boardapi_insert', views.boardapi_insert, name="boardapi_insert"),
+    # path('boardapi_deleteajax', views.boardapi_deleteajax, name="boardapi_deleteajax"),
 ]

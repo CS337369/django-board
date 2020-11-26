@@ -57,7 +57,9 @@
                         </tr>
                         <tr style="height:60px;border-top:solid 1px #dddddd;" align="center">
                             <td width="100%" colspan="2">
+                                {% if user.username == i.b_writer or user.is_staff %}
                                 <a href="/board_edit?b_no={{ i.b_no }}" class="btn btn-outline-success">수정</a>
+                                {% endif %}
                                 <button class="btn btn-outline-success my-2 my-sm-0" style="margin-right:10px;" onclick="location.href='/board'">목록</button>
                             </td>
                         </tr>

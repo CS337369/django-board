@@ -1,12 +1,12 @@
 from django.shortcuts import redirect, render
-from board.models import Board
+from .models import Board
 from django.db.models import ObjectDoesNotExist
 
 import json
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from pip._vendor import requests
+import requests
 # from django.contrib.auth.decorators import login_required
 
 
@@ -125,154 +125,156 @@ def board_deleteajax(request):
 ########################################################################
 
 # @login_required
-def boardapi(request):
+
+# @csrf_exempt
+# def boardapi(request):
     
-    import pandas as pd
+#     import pandas as pd
 
-    query1 = """
-        {
-          BoardAll {
-            bNo
-            bTitle
-            bWriter
-            bNote
-            bCount
-            bDate
-          }
-        }
-    """
+#     query1 = """
+#         {
+#           BoardAll {
+#             bNo
+#             bTitle
+#             bWriter
+#             bNote
+#             bCount
+#             bDate
+#           }
+#         }
+#     """
 
-    # print(query1)
+#     # print(query1)
 
-    url = 'http://127.0.0.1:8000/graphql'
-    result = requests.get(url, json={'query': query1})
-    #print(type(result))
+#     url = 'http://127.0.0.1:8000/graphql'
+#     result = requests.get(url, json={'query': query1})
+#     #print(type(result))
 
-    json_data = json.loads(result.text)
-    #print(type(json_data))
+#     json_data = json.loads(result.text)
+#     #print(type(json_data))
 
-    df_data = json_data['data']['BoardAll']
-    #print(type(df_data))
+#     df_data = json_data['data']['BoardAll']
+#     #print(type(df_data))
 
-    df = pd.DataFrame(df_data)
-    df = df[df.columns[::-1]]
-    #print(type(df))
+#     df = pd.DataFrame(df_data)
+#     df = df[df.columns[::-1]]
+#     #print(type(df))
 
-    rsBoard = [tuple(r) for r in df.to_numpy()]
-    #print(type(rsBoard))
+#     rsBoard = [tuple(r) for r in df.to_numpy()]
+#     #print(type(rsBoard))
 
-    return render(request, "boardapi_list.html", {
-        'rsBoard': rsBoard
-    })
+#     return render(request, "boardapi_list.html", {
+#         'rsBoard': rsBoard
+#     })
 
+# @csrf_exempt
+# def boardapi_view(request):
+#     bno = request.GET['b_no']
 
-def boardapi_view(request):
-    bno = request.GET['b_no']
+#     query1 = "{ BoardDetail(bNo:" + bno + ") {  bNo bTitle bWriter bNote bCount bDate } }"
 
-    query1 = "{ BoardDetail(bNo:" + bno + ") {  bNo bTitle bWriter bNote bCount bDate } }"
+#     # print(query1)
 
-    # print(query1)
+#     url = 'http://127.0.0.1:8000/graphql'
+#     result = requests.get(url, json={'query': query1})
+#     json_data = json.loads(result.text)
+#     rsDetail = json_data['data']['BoardDetail']
 
-    url = 'http://127.0.0.1:8000/graphql'
-    result = requests.get(url, json={'query': query1})
-    json_data = json.loads(result.text)
-    rsDetail = json_data['data']['BoardDetail']
+#     return render(request, "boardapi_view.html", {
+#         'rsDetail': rsDetail
+#     })
 
-    return render(request, "boardapi_view.html", {
-        'rsDetail': rsDetail
-    })
-
-
-def boardapi_write(request):
-    return render(request, "boardapi_write.html", )
-
-
-@csrf_exempt
-def boardapi_insert(request):
-    btitle = request.GET['b_title']
-    bwriter = request.GET['b_writer']
-    bnote = request.GET['b_note']
-
-    query1 = 'mutation BoardCreate { boardCreate (bTitle: "' + btitle \
-             + '", bWriter: "' + bwriter \
-             + '", bNote: "' + bnote + '") {  board { bNo bTitle bWriter bNote bCount } } } '
-
-    print(query1)
-
-    url = 'http://127.0.0.1:8000/graphql'
-    result = requests.post(url, json={'query': query1})
-
-    json_data = json.loads(result.text)
-
-    return redirect('boardapi')
+# @csrf_exempt
+# def boardapi_write(request):
+#     return render(request, "boardapi_write.html", )
 
 
-def boardapi_edit(request):
-    bno = request.GET['b_no']
+# @csrf_exempt
+# def boardapi_insert(request):
+#     btitle = request.GET['b_title']
+#     bwriter = request.GET['b_writer']
+#     bnote = request.GET['b_note']
 
-    query1 = "{ BoardDetail(bNo:" + bno + ") {  bNo bTitle bWriter bNote bCount bDate } }"
+#     query1 = 'mutation BoardCreate { boardCreate (bTitle: "' + btitle \
+#              + '", bWriter: "' + bwriter \
+#              + '", bNote: "' + bnote + '") {  board { bNo bTitle bWriter bNote bCount } } } '
 
-    print(query1)
+#     print(query1)
 
-    url = 'http://127.0.0.1:8000/graphql'
-    result = requests.get(url, json={'query': query1})
-    json_data = json.loads(result.text)
-    rsDetail = json_data['data']['BoardDetail']
+#     url = 'http://127.0.0.1:8000/graphql'
+#     result = requests.post(url, json={'query': query1})
 
-    return render(request, "boardapi_edit.html", {
-        'rsDetail': rsDetail
-    })
+#     json_data = json.loads(result.text)
 
+#     return redirect('boardapi')
 
-@csrf_exempt
-def boardapi_update(request):
-    bno = request.GET['b_no']
-    btitle = request.GET['b_title']
-    bwriter = request.GET['b_writer']
-    bnote = request.GET['b_note']
+# @csrf_exempt
+# def boardapi_edit(request):
+#     bno = request.GET['b_no']
 
-    query1 = 'mutation BoardUpdate { boardUpdate (bNo:' + str(bno) + 'bTitle: "' + btitle \
-             + '", bWriter: "' + bwriter \
-             + '", bNote: "' + bnote + '") {  board { bNo bTitle bWriter bNote bCount } } } '
+#     query1 = "{ BoardDetail(bNo:" + bno + ") {  bNo bTitle bWriter bNote bCount bDate } }"
 
-    print(query1)
+#     print(query1)
 
-    url = 'http://127.0.0.1:8000/graphql'
-    result = requests.post(url, json={'query': query1})
+#     url = 'http://127.0.0.1:8000/graphql'
+#     result = requests.get(url, json={'query': query1})
+#     json_data = json.loads(result.text)
+#     rsDetail = json_data['data']['BoardDetail']
 
-    json_data = json.loads(result.text)
-
-    return redirect('boardapi')
-
-
-@csrf_exempt
-def boardapi_deleteajax(request):
-
-    bno = request.GET['b_no']
-
-    querydel = ' mutation BoardDelete { boardDelete(bNo: ' + str(bno) + ') { board { bTitle bWriter bNote } } }'
-
-    url = 'http://127.0.0.1:8000/graphql'
-
-    result = requests.post(url, json={'query': querydel})
-
-    json_data = json.loads(result.text)
-
-    context = {}
-    context['result_msg'] = 'Board deleted...'
-
-    return JsonResponse(context, content_type="application/json")
+#     return render(request, "boardapi_edit.html", {
+#         'rsDetail': rsDetail
+#     })
 
 
-def portfolio(request):
-    rsBoard = Board.objects.all()
+# @csrf_exempt
+# def boardapi_update(request):
+#     bno = request.GET['b_no']
+#     btitle = request.GET['b_title']
+#     bwriter = request.GET['b_writer']
+#     bnote = request.GET['b_note']
 
-    return render(request, "portfolio.html", {
-        'rsBoard': rsBoard
-    })
+#     query1 = 'mutation BoardUpdate { boardUpdate (bNo:' + str(bno) + 'bTitle: "' + btitle \
+#              + '", bWriter: "' + bwriter \
+#              + '", bNote: "' + bnote + '") {  board { bNo bTitle bWriter bNote bCount } } } '
 
-def portfolio_detail(request):
-    rsBoard = Board.objects.all()
-    return render(request, "portfolio_details.html", {
-        'rsBoard': rsBoard
-    })
+#     print(query1)
+
+#     url = 'http://127.0.0.1:8000/graphql'
+#     result = requests.post(url, json={'query': query1})
+
+#     json_data = json.loads(result.text)
+
+#     return redirect('boardapi')
+
+
+# @csrf_exempt
+# def boardapi_deleteajax(request):
+
+#     bno = request.GET['b_no']
+
+#     querydel = ' mutation BoardDelete { boardDelete(bNo: ' + str(bno) + ') { board { bTitle bWriter bNote } } }'
+
+#     url = 'http://127.0.0.1:8000/graphql'
+
+#     result = requests.post(url, json={'query': querydel})
+
+#     json_data = json.loads(result.text)
+
+#     context = {}
+#     context['result_msg'] = 'Board deleted...'
+
+#     return JsonResponse(context, content_type="application/json")
+
+
+# def portfolio(request):
+#     rsBoard = Board.objects.all()
+
+#     return render(request, "portfolio.html", {
+#         'rsBoard': rsBoard
+#     })
+
+# def portfolio_detail(request):
+#     rsBoard = Board.objects.all()
+#     return render(request, "portfolio_details.html", {
+#         'rsBoard': rsBoard
+#     })

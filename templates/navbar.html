@@ -12,12 +12,7 @@
     <nav class="nav-menu d-none d-lg-block">
     <ul>
         <li class="active"><a href="/">Home</a></li>
-            <li class="drop-down"><a href="board">Board</a>
-                <ul>
-                <li><a href="board">Board</a></li>
-                <li><a href="boardapi">Board (API)</a></li>
-                </ul>
-            </li>
+        <li><a href="board">Board</a></li>
         <li><a href="album">Album</a></li>
         <li class="drop-down"><a href="">Menus</a>
             <ul>
@@ -27,9 +22,9 @@
             </li>
             </ul>
         {% if user.is_authenticated %}
-            <li class="get-started"><a href="accounts/logout">Log Out</a></li>
+            <li class="get-started"><a href="accounts/logout">로그아웃</a></li>
         {% else %}
-            <li class="get-started"><a href="accounts/login">Log In</a></li>
+            <li class="get-started"><a href="accounts/login">로그인</a></li>
         {% endif %}
     </ul>
     </nav><!-- .nav-menu -->
